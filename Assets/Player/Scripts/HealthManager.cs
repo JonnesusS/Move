@@ -1,13 +1,22 @@
 using UnityEngine;
+using UnityEngine.UI;
 
 public class HealthManager : MonoBehaviour
 {
-    [SerializeField]
-    float hitPoints = 100f;
+    [SerializeField] float maxHitPoints = 100f;
+    float hitPoints;
+
+    public Slider healthSlider;
+
+    void Start()
+    {
+        hitPoints = maxHitPoints;
+    }
 
     void Hit(float rawDamage)
     {
         hitPoints -= rawDamage;
+        SetHealthSlider();
 
         Debug.Log("OUCH: " + hitPoints.ToString());
 
@@ -15,5 +24,18 @@ public class HealthManager : MonoBehaviour
         {
             Debug.Log("TODO: GAME OVER - YOU DIED");
         }
+    }
+
+    void SetHealthSlider()
+    {
+        if (healthSlider != null)
+        {
+            healthSlider.value = NormalisedHitPoints();
+        }
+    }
+
+    float NormalisedHitPoints()
+    {
+        return hitPoints / maxHitPoints;
     }
 }
